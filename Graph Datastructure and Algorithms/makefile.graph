@@ -1,0 +1,31 @@
+# Makefile to build & install dynamic library "libgraph.so".
+# It needs root permission.
+# Name: Abhay kumar keshari
+# Roll No.: 20CS10001
+
+HDR = graph.h
+OBJ = graph.o
+SRC = graph.c
+LIB = libgraph.a
+LIBPATH = /usr/lib
+INCPATH = /usr/include
+CC = gcc
+CFLAGS = -Wall
+TARGETS = $(OBJ) library install clean
+
+all: $(TARGETS)
+
+library:
+	@ echo Building library.......
+	ar rcs -o $(LIB) $(OBJ)
+
+graph.o: graph.c graph.h
+	$(CC) $(CFLAGS) -c graph.c 
+
+install:
+	@ echo Installing library.......
+	cp -p $(HDR) $(INCPATH)
+	cp -p $(LIB) $(LIBPATH)
+
+clean:
+	rm -f $(OBJ) $(LIB)
