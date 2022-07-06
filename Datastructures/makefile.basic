@@ -1,0 +1,43 @@
+# Makefile to build & install dynamic library "libdatastruct.so".
+# It needs root permission.
+# Name: Abhay kumar keshari
+# Roll No.: 20CS10001
+
+SRCS = llist.c stack.c queue.c heap.c union_find.c
+OBJS = llist.o queue.o stack.o heap.o union_find.o
+HDR = lib.h
+SUBHDRS = llist.h stack.h queue.h heap.h union_find.h
+LIB = libdatastruct.so
+LIBPATH = /usr/lib
+INCPATH = /usr/include
+SUBINCPATH = /usr/include/lib
+CC = gcc
+CFLAGS = -Wall
+TARGETS = $(OBJS) library install clean
+
+all: $(TARGETS)
+
+library:
+	@ echo Building library.......
+	$(CC) -shared -o $(LIB) $(OBJS)
+
+llist.o: llist.c llist.h
+	$(CC) $(CFLAGS) -c -fPIC llist.c
+stack.o: stack.c stack.h llist.h
+	$(CC) $(CFLAGS) -c -fPIC stack.c
+queue.o: queue.c llist.h queue.h
+	$(CC) $(CFLAGS) -c -fPIC queue.c
+heap.o: heap.c heap.h
+	$(CC) $(CFLAGS) -c -fPIC heap.c
+union_find.o: union_find.c union_find.h
+	$(CC) $(CFLAGS) -c -fPIC union_find.c
+
+install:
+	@ echo Installing library.......
+	-mkdir $(SUBINCPATH)
+	cp -p $(SUBHDRS) $(SUBINCPATH)
+	cp -p $(HDR) $(INCPATH) 
+	cp -p $(LIB) $(LIBPATH)
+
+clean:
+	rm -f $(OBJS) $(LIB)
