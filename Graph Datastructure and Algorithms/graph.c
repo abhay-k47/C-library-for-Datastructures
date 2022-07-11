@@ -74,7 +74,16 @@ GRAPH readGraph(char *FName)
     fclose(fptr);
     return G;
 }
-
+// Prints the graph in the format same as input
+void printGraph(GRAPH G){
+    printf("%d\n", G.nodes);
+    printf("%d\n", G.edges);
+    for(int i=0; i<G.nodes; i++){
+        for(int j=0; j<G.nodes; j++){
+            if(G.weight[i][j]!=INT_MAX) printf("%d %d %d\n", i, j, G.weight[i][j]);
+        }
+    }
+}
 // Utility function for DFS
 static void DFSUtil(GRAPH G, int *visited, int root)
 {
@@ -251,14 +260,4 @@ int ShortestPath(GRAPH G, int source, int destination, int* distance, int toPrin
         printf("\n");
     }
     return distance[destination];
-}
-
-void printGraph(GRAPH G){
-    printf("%d\n", G.nodes);
-    printf("%d\n", G.edges);
-    for(int i=0; i<G.nodes; i++){
-        for(int j=0; j<G.nodes; j++){
-            if(G.weight[i][j]!=INT_MAX) printf("%d %d %d\n", i, j, G.weight[i][j]);
-        }
-    }
 }
