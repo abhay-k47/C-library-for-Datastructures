@@ -207,3 +207,58 @@ void MST(GRAPH G)
     free(indexUF);
     free(edges);
 }
+
+int ShortestPath(GRAPH G, int source, int destination, int* distance, int toPrint){
+    // if(source<0 || destination<0) exit(-1);
+    int * isVisited = (int *) malloc(G.nodes * sizeof(int));
+    int * parent = (int *) malloc(G.nodes * sizeof(int));
+    for(int v=0; v<G.nodes; v++){
+        distance[v]=INT_MAX;
+        isVisited[v]=0;
+        parent[v]=-1;
+    }
+    distance[source]=0;
+    for(int i=0; i<G.nodes; i++){
+        int nearest=-1;
+        for(int v=0; v<G.nodes; v++){
+            if(isVisited[v]==0 && (nearest==-1 || distance[nearest]>distance[v])) nearest=v;
+        }
+        if(distance[nearest]==INT_MAX) break;
+        isVisited[nearest]=1;
+        for(int v=0; v<G.nodes; v++){
+            if(G.weight[nearest][v]!=INT_MAX){
+                if(isVisited[v]==0 && distance[v]>distance[nearest]+G.weight[nearest][v]){
+                    distance[v]=distance[nearest]+G.weight[nearest][v];
+                    parent[v]=nearest;
+                }
+            }
+        }
+    }
+    if(distance[destination]==INT_MAX) printf("No path found\n");
+    else{
+        int curr=destination;
+        STACK S = createStack();
+        while(curr!=-1){
+            S = push(S, curr);
+            curr = parent[curr];
+        }
+        S = pop(S, &curr);
+        printf("Shortest Path: %d",curr);
+        while(isEmptyStack(S)==0){
+            S = pop(S, &curr);
+            printf("->%d",curr);
+        }
+        printf("\n");
+    }
+    return distance[destination];
+}
+
+void printGraph(GRAPH G){
+    printf("%d\n", G.nodes);
+    printf("%d\n", G.edges);
+    for(int i=0; i<G.nodes; i++){
+        for(int j=0; j<G.nodes; j++){
+            if(G.weight[i][j]!=INT_MAX) printf("%d %d %d\n", i, j, G.weight[i][j]);
+        }
+    }
+}
