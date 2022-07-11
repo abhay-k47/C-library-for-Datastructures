@@ -9,8 +9,10 @@ typedef struct
 } GRAPH;
 
 GRAPH readGraph(char *FName);
+void printGraph(GRAPH G);
 void DFS(GRAPH G);
 void BFS(GRAPH G);
 void MST(GRAPH G);
+int ShortestPath(GRAPH G, int source, int destination, int* distance, int toPrint);
 
 #endif
